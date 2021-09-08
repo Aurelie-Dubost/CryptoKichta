@@ -1,0 +1,65 @@
+---
+title: "Crypto Kichta"
+output: html_notebook
+---
+coinmarketcapr: https://cran.r-project.org/web/packages/coinmarketcapr/index.html
+
+```{r}
+# Packages
+install.packages("devtools")
+install.packages("coinmarketcapr")
+devtools::install_github("amrrs/coinmarketcapr")
+
+install.packages("crypto", dependencies = TRUE)
+devtools::install_github("jessevent/crypto")
+```
+
+
+```{r}
+# Libraries
+library(coinmarketcapr) 
+library(crypto)
+library(tidyverse)
+library(ggplot2)
+library(ggthemes)
+library(jsonlite)
+library(data.table) 
+library(curl)
+library(cli)
+library(crayon)
+library(testthat)
+library(knitr)
+library(rmarkdown) 
+library(dplyr)
+
+# API
+key <- 'ea48bcb2-dde5-423f-9b44-c14664e3ab89'
+coinmarketcapr::setup(key)
+```
+
+```{r}
+# Get crypto market stats
+marketcap <- get_global_marketcap()
+View(t(marketcap))
+
+# Get top 5 market cap
+risk_portfolio_tickers  <- get_crypto_listings(limit = 5)
+```
+
+```{r}
+# Get portfolio
+#get the global market cap details and assign it to a dataframe
+all_coins <- get_crypto_listings()
+head(all_coins)
+```
+
+```{r}
+# Retrieve crypto market history for specific coin
+get_crypto_map(symbol=c("BTC","ETH"))
+get_crypto_quotes(latest = FALSE, symbol = c("BTC","ETH"),
+time_start = Sys.Date()-180, time_end=Sys.Date(), count = 10,
+interval = "30m")
+
+crypto_timeseries('bitcoin')
+```
+
